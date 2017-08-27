@@ -2,7 +2,6 @@
 
 import sys
 import time
-import barcodeScanner
 from pyzbar.pyzbar import decode
 from PIL import Image
 
@@ -16,16 +15,16 @@ def scan_picture():
         time.sleep(2)
         camera.start_preview()
         filename = '../data/barcode.png'
+
+        # Attempt to scan 10 times
         for i in range(10):
             camera.capture(filename)
             barcode = scan_barcode(filename)
-
             #Return barcode if scan is succesful
             if barcode != "":
                 break
         camera.close()
         return barcode
-
     else:
         print("Camera is not supported")
         return ""

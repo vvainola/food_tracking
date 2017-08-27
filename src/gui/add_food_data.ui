@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>add_food_form</class>
+ <widget class="QMainWindow" name="add_food_form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>184</width>
+    <height>428</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Food data</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTableWidget" name="table_food_data">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>241</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::AllEditTriggers</set>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>120</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>40</number>
+    </attribute>
+    <row>
+     <property name="text">
+      <string>Code</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Calories</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Protein</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Carbs</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Sugar</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Fat</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Salt</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>Value</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="btn_cancel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_ok">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>380</y>
+      <width>61</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ok</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
