@@ -1,9 +1,11 @@
 #!/bin/bash
 #This script toggle the virtual keyboard
 PID=`pidof matchbox-keyboard`
-if [ ! -e $PID ]; then
+#Turn keyboard off if first arguments is -off and keyboard is currently turned on
+if [[ "" -ne $PID && $1 = -off ]]; then
     killall matchbox-keyboard
-else
+#Turn keyboard on if first argument is -on and keyboard is not currently turned on
+elif [[ $1 = -on &&  $PID = "" ]]; then
     matchbox-keyboard&
     sleep .1
     MATCHBOX_ID=$(xdotool search --onlyvisible --name Keyboard)
