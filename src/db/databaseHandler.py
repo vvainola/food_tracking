@@ -51,7 +51,7 @@ def search(table_name, column, value):
     #Substitution requires a tuple
     value = (str(value), )
     cursor.execute(exec_text, value)
-    result = cursor.fetchall()
+    result = cursor.fetchone()
 
     # Commit changes
     conn.commit()
