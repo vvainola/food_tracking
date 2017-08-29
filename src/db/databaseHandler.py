@@ -58,3 +58,16 @@ def search(table_name, column, value):
     conn.close()
 
     return result
+
+def search_like(table_name, column, value):
+    conn = sqlite3.connect('food_tracker.db')
+    cursor = conn.cursor()
+    exec_text = 'SELECT * FROM ' + table_name +  ' WHERE ' + column + ' LIKE ? COLLATE NOCASE'
+
+    #Substitution requires a tuple
+    value = ("%" + str(value) + "%", )
+    cursor.execute(exec_text, value)
+    result = cursor.fetchall()
+
+    conn.close()
+    return result

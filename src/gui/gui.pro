@@ -33,4 +33,5 @@ HEADERS += \
 FORMS += \
         mainwindow.ui \
     add_food_data.ui \
-    weight_window.ui
+    weight_window.ui \
+    search_window.ui
