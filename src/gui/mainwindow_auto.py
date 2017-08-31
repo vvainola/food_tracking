@@ -44,6 +44,9 @@ class Ui_MainWindow(object):
         self.btn_search = QtWidgets.QPushButton(self.centralWidget)
         self.btn_search.setGeometry(QtCore.QRect(0, 60, 91, 51))
         self.btn_search.setObjectName("btn_search")
+        self.btn_delete = QtWidgets.QPushButton(self.centralWidget)
+        self.btn_delete.setGeometry(QtCore.QRect(0, 120, 91, 41))
+        self.btn_delete.setObjectName("btn_delete")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 800, 42))
@@ -80,4 +83,5 @@ class Ui_MainWindow(object):
         item = self.table_eaten_today.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "Salt"))
         self.btn_search.setText(_translate("MainWindow", "Search"))
+        self.btn_delete.setText(_translate("MainWindow", "Delete"))
 

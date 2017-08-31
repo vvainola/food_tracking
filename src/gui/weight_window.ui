@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Weight</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="table_weight">

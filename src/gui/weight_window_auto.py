@@ -43,7 +43,7 @@ class Ui_weight_form(object):
 
     def retranslateUi(self, weight_form):
         _translate = QtCore.QCoreApplication.translate
-        weight_form.setWindowTitle(_translate("weight_form", "MainWindow"))
+        weight_form.setWindowTitle(_translate("weight_form", "Weight"))
         item = self.table_weight.horizontalHeaderItem(0)
         item.setText(_translate("weight_form", "Start weight"))
         item = self.table_weight.horizontalHeaderItem(1)
