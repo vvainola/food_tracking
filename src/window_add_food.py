@@ -1,4 +1,6 @@
 import gui.add_food_data_auto
+import db.databaseHandler
+import os
 from PyQt5.QtWidgets import *
 
 class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
@@ -32,10 +34,12 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
                 return
             else:
                 food_data[header_text] = row_text
-        # All cells were filled
+        # All cells were filled, update db
         db.databaseHandler.replace_into("FOOD_DATA", food_data)
-        self.parent.food_name = food_data["NAME"]
-        self.parent.show_weight_window()
+        self.close()
+        
+        # Show weight window with title
+        self.parent.show_weight_window(food_data["NAME"])
 
     def clear_table(self):
         """ Clear the food data table """
