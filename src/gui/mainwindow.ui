@@ -10,11 +10,22 @@
     <height>480</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
     <height>480</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>8</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Food tracker</string>
@@ -122,7 +133,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>42</height>
+     <height>29</height>
     </rect>
    </property>
   </widget>

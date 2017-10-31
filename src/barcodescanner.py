@@ -14,7 +14,7 @@ def scan_picture():
         camera.rotation = -90
         time.sleep(2)
         camera.start_preview()
-        filename = '../data/barcode.png'
+        filename = './data/barcode.jpg'
 
         # Attempt to scan 10 times
         for i in range(10):
