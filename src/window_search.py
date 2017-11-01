@@ -31,7 +31,7 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
                 food_data[header_text] = str(column_text)
             # Update database after each row
             db.databaseHandler.replace_into("FOOD_DATA", food_data)
-        self.parent.update_table_eaten_today()
+        self.parent.update_table_eaten()
 
     def pressed_remove(self):
         selection_model = self.table_search.selectionModel()
@@ -44,7 +44,7 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
         columns_values["NAME"] = name
         db.databaseHandler.delete_records("FOOD_DATA", columns_values)
         self.table_search.removeRow(row_index)
-        self.parent.update_table_eaten_today()
+        self.parent.update_table_eaten()
 
     def pressed_new(self):
         """ Inserts new item to the end of the search list """

@@ -21,10 +21,18 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
 
         self.QApp = QApp
 
+        # Date functions
+        # Hide calendar by default
+        self.calendar.hide()
+        #Set date to today on start up
+        today = datetime.today()
+        self.date = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+
         # Connect buttons
         self.btn_scan.clicked.connect(self.pressed_scan)
         self.btn_search.clicked.connect(self.pressed_search)
         self.btn_delete.clicked.connect(self.pressed_delete)
+        self.table_eaten_today.cellClicked.connect(self.dateSelection)
 
         # Create windows
         self.add_food_window = AddFoodWindow(self)
@@ -32,7 +40,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.search_window = SearchWindow(self)
 
         # Update todays table in case program had been closed
-        self.update_table_eaten_today()
+        self.update_table_eaten()
 
         # Variables for accessing data across methods
         self.barcode = ""
@@ -81,35 +89,32 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         columns_values["AMOUNT"] = amount
         db.databaseHandler.delete_records("FOOD_LOG", columns_values)
 
-        self.update_table_eaten_today()
+        self.update_table_eaten()
 
     def insert_row(self, weight):
         # After adding a new food, the database info has to be retrieved again
         if self.db_info is None:
             self.search_barcode(self.barcode)
 
-        today = datetime.today()
-        today = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
-
         log_entry = {}
         log_entry["NAME"] = self.db_info["NAME"]
-        log_entry["DATE"] = today
+        log_entry["DATE"] = self.date
         log_entry["AMOUNT"] = str(weight)
         db.databaseHandler.replace_into("FOOD_LOG", log_entry)
 
         # Update total row
-        self.update_table_eaten_today()
+        self.update_table_eaten()
 
     def show_add_food_window(self):
         # Clear table before showing it
         self.add_food_window.clear_table()
-        #Set barcode
+        # Set barcode
         self.add_food_window.set_barcode(self.barcode)
         self.add_food_window.show()
         self.add_food_window.move(0, 0)
 
-        #Start editing name
-        name = self.add_food_window.table_food_data.item(1,0)
+        # Start editing name
+        name = self.add_food_window.table_food_data.item(1, 0)
         print(name.text())
         self.add_food_window.table_food_data.editItem(name)
 
@@ -125,8 +130,8 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.weight_window.show()
         self.weight_window.move(0, 0)
 
-        #Start editing start weight
-        start_weight = self.weight_window.table_weight.item(0,0)
+        # Start editing start weight
+        start_weight = self.weight_window.table_weight.item(0, 0)
         self.weight_window.table_weight.editItem(start_weight)
 
     def search_barcode(self, barcode):
@@ -170,9 +175,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
             self.db_info["SATFAT"] = data[names["SATFAT"]]
             self.db_info["SALT"] = data[names["SALT"]]
 
-    
-
-    def update_table_eaten_today(self):
+    def update_table_eaten(self):
         total_calories = 0
         total_protein = 0
         total_carbs = 0
@@ -181,17 +184,15 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         total_satfat = 0
         total_salt = 0
 
-        # Search todays data
-        today = datetime.today()
-        today = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+        #Search food log entries for selected date       
         log_columns, log_data = db.databaseHandler.search(
-            "FOOD_LOG", "DATE", today)
+            "FOOD_LOG", "DATE", self.date)
 
-        # Insert today total row
+        # Insert total row
         self.table_eaten_today.setRowCount(0)
         row_count = self.table_eaten_today.rowCount()
         self.table_eaten_today.insertRow(row_count)
-        self.table_eaten_today.setItem(row_count, 0, QTableWidgetItem("Today"))
+        self.table_eaten_today.setItem(row_count, 0, QTableWidgetItem(self.date))
         self.table_eaten_today.setItem(row_count, 1, QTableWidgetItem("Total"))
         if log_data is not None:
             for log_entry in log_data:
@@ -201,7 +202,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
                 # Names are unique so only one entry is retrieved
                 food_data = food_data[0]
 
-                #Add new row
+                # Add new row
                 row_count = self.table_eaten_today.rowCount()
                 self.table_eaten_today.insertRow(row_count)
 
@@ -258,7 +259,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
                 self.table_eaten_today.setItem(
                     row_count, 7, QTableWidgetItem(str("%.1f" % salt)))
 
-        #Update total row
+        # Update total row
         # Calories
         self.table_eaten_today.setItem(
             0, 3, QTableWidgetItem(str("%.1f" % total_calories)))
@@ -278,4 +279,15 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # Salt
         self.table_eaten_today.setItem(
             0, 7, QTableWidgetItem(str("%.1f" % total_salt)))
-       
+
+    def dateSelection(self, row, column):
+        if row == 0 and column == 0 and self.calendar.isHidden:
+            self.calendar.show()
+        else:
+            date = self.calendar.selectedDate()
+            day = date.day()
+            month = date.month()
+            year = date.year()
+            self.date = str(year) + "-" + str(month) + "-" + str(day)
+            self.update_table_eaten()
+            self.calendar.hide()
