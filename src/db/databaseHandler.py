@@ -121,7 +121,7 @@ def delete_records(table_name, columns_values):
     #Discard the last "AND" and remove only 1 entry
     where_text = where_text[:-4] + " LIMIT 1"
     exec_text = 'DELETE FROM ' + table_name + ' WHERE ' + where_text
-    
+
     cursor.execute(exec_text, values)
 
     # Commit changes

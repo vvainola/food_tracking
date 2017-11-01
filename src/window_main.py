@@ -11,7 +11,7 @@ from window_weight import WeightWindow
 from barcodescanner import scan_picture
 from datetime import datetime
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QPoint
 
 
 class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
@@ -37,8 +37,6 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # Variables for accessing data across methods
         self.barcode = ""
         self.db_info = ""   # Info found from db
-        self.food_name = ""      # Name displayed in weight window
-        self.weight = ""    # Measured weight
 
     def pressed_scan(self):
         """ Function connected to pressing scan button """
@@ -105,9 +103,15 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
     def show_add_food_window(self):
         # Clear table before showing it
         self.add_food_window.clear_table()
+        #Set barcode
         self.add_food_window.set_barcode(self.barcode)
         self.add_food_window.show()
         self.add_food_window.move(0, 0)
+
+        #Start editing name
+        name = self.add_food_window.table_food_data.item(1,0)
+        print(name.text())
+        self.add_food_window.table_food_data.editItem(name)
 
     def show_weight_window(self, title):
         """ Display weight window
@@ -120,6 +124,10 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.weight_window.clear_table()
         self.weight_window.show()
         self.weight_window.move(0, 0)
+
+        #Start editing start weight
+        start_weight = self.weight_window.table_weight.item(0,0)
+        self.weight_window.table_weight.editItem(start_weight)
 
     def search_barcode(self, barcode):
         """ Search database for barcode and update

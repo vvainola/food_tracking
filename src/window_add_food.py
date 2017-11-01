@@ -3,6 +3,7 @@ import db.databaseHandler
 import os
 from PyQt5.QtWidgets import *
 
+
 class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
@@ -18,16 +19,20 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
         self.error_message.setIcon(QMessageBox.Information)
 
     def pressed_cancel(self):
-        """ Pressing cancel button closes the window """
+        """ Pressing cancel button closes the window
+            and keyboard 
+        """
         os.system("./toggle_keyboard.sh -off")
         self.close()
 
     def pressed_ok(self):
-        """ Pressing ok button closes the add food window if all data is filled """
+        """ Pressing ok button closes the add food window if all data is filled
+        """
         food_data = {}
         for i in range(self.table_food_data.rowCount()):
             row_text = self.table_food_data.item(i, 0).text()
-            header_text = self.table_food_data.verticalHeaderItem(i).text().upper()
+            header_text = self.table_food_data.verticalHeaderItem(
+                i).text().upper()
             if row_text == "":
                 self.error_message.setText("All data is not filled")
                 self.error_message.show()
@@ -37,7 +42,7 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
         # All cells were filled, update db
         db.databaseHandler.replace_into("FOOD_DATA", food_data)
         self.close()
-        
+
         # Show weight window with title
         self.parent.show_weight_window(food_data["NAME"])
 
