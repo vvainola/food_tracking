@@ -24,9 +24,10 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # Date functions
         # Hide calendar by default
         self.calendar.hide()
-        #Set date to today on start up
+        # Set date to today on start up
         today = datetime.today()
-        self.date = str(today.year) + "-" + str(today.month) + "-" + str(today.day)
+        self.date = str(today.year) + "-" + \
+            str(today.month) + "-" + str(today.day)
 
         # Connect buttons
         self.btn_scan.clicked.connect(self.pressed_scan)
@@ -115,8 +116,8 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
 
         # Start editing name
         name = self.add_food_window.table_food_data.item(1, 0)
-        print(name.text())
         self.add_food_window.table_food_data.editItem(name)
+        self.add_food_window.table_food_data.setCurrentCell(1, 0)
 
     def show_weight_window(self, title):
         """ Display weight window
@@ -133,6 +134,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # Start editing start weight
         start_weight = self.weight_window.table_weight.item(0, 0)
         self.weight_window.table_weight.editItem(start_weight)
+        self.weight_window.table_weight.setCurrentCell(0,0)
 
     def search_barcode(self, barcode):
         """ Search database for barcode and update
@@ -184,7 +186,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         total_satfat = 0
         total_salt = 0
 
-        #Search food log entries for selected date       
+        # Search food log entries for selected date
         log_columns, log_data = db.databaseHandler.search(
             "FOOD_LOG", "DATE", self.date)
 
@@ -192,7 +194,8 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.table_eaten_today.setRowCount(0)
         row_count = self.table_eaten_today.rowCount()
         self.table_eaten_today.insertRow(row_count)
-        self.table_eaten_today.setItem(row_count, 0, QTableWidgetItem(self.date))
+        self.table_eaten_today.setItem(
+            row_count, 0, QTableWidgetItem(self.date))
         self.table_eaten_today.setItem(row_count, 1, QTableWidgetItem("Total"))
         if log_data is not None:
             for log_entry in log_data:
