@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-test = True
+test = False
 
 import sqlite3
 
@@ -40,6 +40,23 @@ def init_database():
                         ON DELETE CASCADE);''')
     conn.commit()
     conn.close()
+
+def execute(command, values):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute(command, values)
+
+    data = cursor.fetchall()
+    column_names = [description[0] for description in cursor.description]
+    names = {}
+    for i in range(len(column_names)):
+        names[column_names[i]] = i
+
+    # Commit changes
+    conn.commit()
+    conn.close()
+
+    return (names, data)
 
 
 def replace_into(table_name, data):

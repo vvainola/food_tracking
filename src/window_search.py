@@ -3,6 +3,7 @@ import os
 import gui.search_window_auto
 from PyQt5.QtWidgets import *
 
+
 class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__(parent)
@@ -19,6 +20,10 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
         self.btn_remove.clicked.connect(self.pressed_remove)
         self.btn_save.clicked.connect(self.pressed_save)
         self.box_search.textChanged.connect(self.text_changed)
+
+        # Callback function to be called on ok press
+        self.callback_function = None
+        self.callback_arg = None
 
     def pressed_save(self):
         # Go through all rows
@@ -65,12 +70,14 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
         name = self.table_search.item(row_index, 1).text()
         self.parent.search_name(name)
         self.close()
-        self.parent.show_weight_window(name)
+        self.callback_function(self.callback_arg)
 
     def text_changed(self):
         self.table_search.setRowCount(0)
         # There is more than 1 character in the search box
         search_text = self.box_search.text()
+        if search_text == "":
+            search_text = "¤"
 
         # Search for name
         if self.btn_name.isChecked():
@@ -104,3 +111,11 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
                 row_count, 7, QTableWidgetItem(str(item[names["SATFAT"]])))
             self.table_search.setItem(
                 row_count, 8, QTableWidgetItem(str(item[names["SALT"]])))
+
+    def show_window(self, callback_function, arg):
+        self.show()
+        self.move(0, 0)
+        os.system("./toggle_keyboard.sh -on")
+
+        self.callback_function = callback_function
+        self.callback_arg = arg

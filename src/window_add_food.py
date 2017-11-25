@@ -14,6 +14,10 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
         self.btn_cancel.clicked.connect(self.pressed_cancel)
         self.btn_ok.clicked.connect(self.pressed_ok)
 
+        #Callback function to be called on ok press
+        self.callback_function = None
+        self.callback_arg = None
+
         # Create message window for errors
         self.error_message = QMessageBox()
         self.error_message.setIcon(QMessageBox.Information)
@@ -41,10 +45,9 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
                 food_data[header_text] = row_text
         # All cells were filled, update db
         db.databaseHandler.replace_into("FOOD_DATA", food_data)
-        self.close()
 
-        # Show weight window with title
-        self.parent.show_weight_window(food_data["NAME"])
+        self.close()
+        self.callback_function(self.callback_arg)
 
     def clear_table(self):
         """ Clear the food data table """
@@ -54,3 +57,21 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
     def set_barcode(self, barcode):
         """ Function for presetting the barcode in the table before display """
         self.table_food_data.setItem(0, 0, QTableWidgetItem(barcode))
+
+    def show_window(self, barcode, callback_function, arg):
+        # Clear table before showing it
+        self.clear_table()
+
+        # Set barcode
+        self.set_barcode(barcode)
+        self.show()
+        self.move(0, 0)
+
+        # Start editing name
+        name = self.table_food_data.item(1, 0)
+        self.table_food_data.editItem(name)
+        self.table_food_data.setCurrentCell(1, 0)
+
+        #Connect callback function
+        self.callback_function = callback_function
+        self.callback_arg = arg

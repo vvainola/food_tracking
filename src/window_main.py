@@ -58,10 +58,13 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
             self.search_barcode(self.barcode)
             # No data exists yet, create new food
             if self.db_info is None:
-                self.show_add_food_window()
+                # Display add food window with barcode preset and set
+                # show weight window as callback func and insert row as callback arg
+                self.add_food_window.show_window(
+                    self.barcode, self.weight_window.show_window, self.insert_row)
             # Go directly to weighing
             else:
-                self.show_weight_window(self.db_info["NAME"])
+                self.weight_window.show_window(self.insert_row)
             os.system("./toggle_keyboard.sh -on")
 
         # Process events until all disconnected scans
@@ -71,9 +74,8 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.btn_scan.clicked.connect(self.pressed_scan)
 
     def pressed_search(self):
-        self.search_window.show()
-        self.search_window.move(0, 0)
-        os.system("./toggle_keyboard.sh -on")
+        self.search_window.show_window(
+            self.weight_window.show_window, self.insert_row)
 
     def pressed_delete(self):
         selection_model = self.table_eaten_today.selectionModel()
@@ -105,36 +107,6 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
 
         # Update total row
         self.update_table_eaten()
-
-    def show_add_food_window(self):
-        # Clear table before showing it
-        self.add_food_window.clear_table()
-        # Set barcode
-        self.add_food_window.set_barcode(self.barcode)
-        self.add_food_window.show()
-        self.add_food_window.move(0, 0)
-
-        # Start editing name
-        name = self.add_food_window.table_food_data.item(1, 0)
-        self.add_food_window.table_food_data.editItem(name)
-        self.add_food_window.table_food_data.setCurrentCell(1, 0)
-
-    def show_weight_window(self, title):
-        """ Display weight window
-
-        Args:
-            name: window title text
-        """
-        self.weight_window.setWindowTitle(title)
-        # Clear table before showing it
-        self.weight_window.clear_table()
-        self.weight_window.show()
-        self.weight_window.move(0, 0)
-
-        # Start editing start weight
-        start_weight = self.weight_window.table_weight.item(0, 0)
-        self.weight_window.table_weight.editItem(start_weight)
-        self.weight_window.table_weight.setCurrentCell(0,0)
 
     def search_barcode(self, barcode):
         """ Search database for barcode and update
