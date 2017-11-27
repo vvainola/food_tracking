@@ -13,8 +13,8 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
         self.btn_cancel.clicked.connect(self.pressed_cancel)
         self.btn_ok.clicked.connect(self.pressed_ok)
 
-        # Callback function to be called on ok press with measured weight
-        self.callback_function = None
+        # callback function to be called on ok press with measured weight
+        self.cb_function = None
 
         # Add row for start and end weights
         self.table_weight.insertRow(0)
@@ -31,8 +31,8 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
         end_weight = int(self.table_weight.item(0, 1).text())
         weight = start_weight - end_weight
 
-        #Close window and callback with weight
-        self.callback_function(weight)
+        #Close window and cb with weight
+        self.cb_function(weight)
         self.close()
 
     def clear_table(self):
@@ -40,7 +40,7 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
         self.table_weight.setItem(0, 0, QTableWidgetItem("0"))
         self.table_weight.setItem(0, 1, QTableWidgetItem("0"))
 
-    def show_window(self, callback_function):
+    def show_window(self, cb_function):
         # Clear table before showing it
         self.clear_table()
         self.show()
@@ -51,5 +51,5 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
         self.table_weight.editItem(start_weight)
         self.table_weight.setCurrentCell(0, 0)
 
-        # Connect callback function
-        self.callback_function = callback_function
+        # Connect cb function
+        self.cb_function = cb_function

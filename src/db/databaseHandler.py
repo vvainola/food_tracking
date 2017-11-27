@@ -31,11 +31,21 @@ def init_database():
 
     conn.execute('''CREATE TABLE IF NOT EXISTS FOOD_LOG
                     (ID         INTEGER     PRIMARY KEY,
-                    NAME        TEXT,
+                    NAME        TEXT    PRIMARY KEY,
                     DATE        TEXT,
                     AMOUNT      INTEGER,
                     CONSTRAINT FK_NAME
                         FOREIGN KEY (NAME) 
+                        REFERENCES FOOD_DATA(NAME)
+                        ON DELETE CASCADE);''')
+
+    conn.execute('''CREATE TABLE IF NOT EXISTS FOOD_RECIPE
+                    (ID         INTEGER     PRIMARY KEY,
+                    NAME        TEXT,
+                    INGREDIENT  TEXT,
+                    AMOUNT      INTEGER,
+                    CONSTRAINT FK_INGREDIENT
+                        FOREIGN KEY (INGREDIENT) 
                         REFERENCES FOOD_DATA(NAME)
                         ON DELETE CASCADE);''')
     conn.commit()
@@ -62,6 +72,31 @@ def execute(command, values):
 def replace_into(table_name, data):
     conn = connect_db()
     exec_text = "REPLACE INTO " + table_name + " ("
+    columns = ""
+    values_text = ""
+    # Actual values are kept separate to avoid SQL injection
+    values = []
+    for key, value in data.items():
+        # Columns cannot have spaces in them
+        columns += " " + key.replace(" ", "") + ", "
+        values_text += " ?, "
+        values.append(value)
+    # Remove last comma by removing 2 last characters
+    columns = columns[:-2]
+    values_text = values_text[:-2]
+
+    # Combine the whole text and execute
+    exec_text = exec_text + columns + ") VALUES (" + values_text + ");"
+    # Values replace the question marks
+    conn.execute(exec_text, tuple(values))
+
+    # Commit changes
+    conn.commit()
+    conn.close()
+
+def insert_into(table_name, data):
+    conn = connect_db()
+    exec_text = "INSERT INTO " + table_name + " ("
     columns = ""
     values_text = ""
     # Actual values are kept separate to avoid SQL injection

@@ -74,8 +74,11 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.btn_scan.clicked.connect(self.pressed_scan)
 
     def pressed_search(self):
-        self.search_window.show_window(
-            self.weight_window.show_window, self.insert_row)
+        self.search_window.show_window(self.search_closed)
+
+    def search_closed(self, name):
+        self.search_name(name)
+        self.weight_window.show_window(self.insert_row)
 
     def pressed_delete(self):
         selection_model = self.table_eaten_today.selectionModel()
@@ -166,9 +169,12 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.table_eaten_today.setRowCount(0)
         row_count = self.table_eaten_today.rowCount()
         self.table_eaten_today.insertRow(row_count)
+        #Add date to the top row
         self.table_eaten_today.setItem(
             row_count, 0, QTableWidgetItem(self.date))
+        #Add text total to the top row
         self.table_eaten_today.setItem(row_count, 1, QTableWidgetItem("Total"))
+        #Add food log entries to the table
         if log_data is not None:
             for log_entry in log_data:
                 food_columns, food_data = db.databaseHandler.search(
