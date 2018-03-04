@@ -121,7 +121,10 @@ class SearchWindow(QMainWindow, gui.search_window.Ui_search_form):
         if self.btn_name.isChecked():
             search_result = db.databaseHandler.search_like(
                 "FOOD_DATA", "NAME", search_text)
-
+        # Search for barcode
+        else:
+            search_result = db.databaseHandler.search_like(
+                "FOOD_DATA", "BARCODE", search_text)
         names = search_result[0]
         data = search_result[1]
         # Add search results in the table

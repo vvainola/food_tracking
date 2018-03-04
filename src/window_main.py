@@ -39,8 +39,8 @@ class MainWindow(QMainWindow, gui.main_window.Ui_MainWindow):
         self.table_eaten_today.cellClicked.connect(self.dateSelection)
 
         # Create windows
-        self.add_food_window = AddFoodWindow(self)
-        self.weight_window = WeightWindow(self)
+        self.add_food_window = AddFoodWindow()
+        self.weight_window = WeightWindow()
         self.search_window = SearchWindow(True)
 
         # Update todays table in case program had been closed

@@ -5,10 +5,9 @@ from PyQt5.QtWidgets import *
 
 
 class WeightWindow(QMainWindow, gui.weight_window.Ui_weight_form):
-    def __init__(self, parent=None):
-        super(self.__class__, self).__init__(parent)
+    def __init__(self):
+        super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.parent = parent
 
         # Connect buttons
         self.btn_cancel.clicked.connect(self.pressed_cancel)

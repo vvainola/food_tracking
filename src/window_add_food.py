@@ -6,11 +6,9 @@ from PyQt5.QtWidgets import *
 
 
 class AddFoodWindow(QMainWindow, gui.add_food_data.Ui_add_food_form):
-    def __init__(self, parent=None):
+    def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.parent = parent
-
         # Connect buttons
         self.btn_cancel.clicked.connect(self.pressed_cancel)
         self.btn_ok.clicked.connect(self.pressed_ok)
