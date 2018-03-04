@@ -34,6 +34,11 @@
       <height>101</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>7</pointsize>
+     </font>
+    </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>100</number>
     </attribute>

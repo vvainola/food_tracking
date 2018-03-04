@@ -2,19 +2,22 @@
 
 import os
 import db.databaseHandler
-import gui.mainwindow_auto
+import gui.main_window
 
 from window_add_food import AddFoodWindow
 from window_search import SearchWindow
 from window_weight import WeightWindow
 
+from utils import toggle_keyboard
 from barcodescanner import scan_picture
+
 from datetime import datetime
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QPoint
 
 
-class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
+class MainWindow(QMainWindow, gui.main_window.Ui_MainWindow):
+
     def __init__(self, QApp):
         super(self.__class__, self).__init__()
         self.setupUi(self)
@@ -38,7 +41,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # Create windows
         self.add_food_window = AddFoodWindow(self)
         self.weight_window = WeightWindow(self)
-        self.search_window = SearchWindow(self)
+        self.search_window = SearchWindow(True)
 
         # Update todays table in case program had been closed
         self.update_table_eaten()
@@ -47,12 +50,22 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         self.barcode = ""
         self.db_info = ""   # Info found from db
 
+        #Adjust column widths
+        self.table_eaten_today.setColumnWidth(7, 60)
+        self.table_eaten_today.setColumnWidth(6, 80)
+        self.table_eaten_today.setColumnWidth(5, 80)
+        self.table_eaten_today.setColumnWidth(4, 60)
+        self.table_eaten_today.setColumnWidth(3, 60)
+        self.table_eaten_today.setColumnWidth(2, 60)
+        self.table_eaten_today.setColumnWidth(1, 200)
+
+
     def pressed_scan(self):
         """ Function connected to pressing scan button """
         # Disconnect scan button so that multiple scans
         # do not occur in a row
         self.btn_scan.disconnect()
-
+    
         self.barcode = scan_picture()
         if self.barcode != "":
             self.search_barcode(self.barcode)
@@ -65,7 +78,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
             # Go directly to weighing
             else:
                 self.weight_window.show_window(self.insert_row)
-            os.system("./toggle_keyboard.sh -on")
+            toggle_keyboard("on")
 
         # Process events until all disconnected scans
         # are processed
@@ -75,6 +88,7 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
 
     def pressed_search(self):
         self.search_window.show_window(self.search_closed)
+
 
     def search_closed(self, name):
         self.search_name(name)
@@ -101,7 +115,6 @@ class MainWindow(QMainWindow, gui.mainwindow_auto.Ui_MainWindow):
         # After adding a new food, the database info has to be retrieved again
         if self.db_info is None:
             self.search_barcode(self.barcode)
-
         log_entry = {}
         log_entry["NAME"] = self.db_info["NAME"]
         log_entry["DATE"] = self.date

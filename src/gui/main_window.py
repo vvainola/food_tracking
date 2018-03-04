@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file './src/gui/qt/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,10 +24,18 @@ class Ui_MainWindow(object):
         self.centralWidget = QtWidgets.QWidget(MainWindow)
         self.centralWidget.setObjectName("centralWidget")
         self.btn_scan = QtWidgets.QPushButton(self.centralWidget)
-        self.btn_scan.setGeometry(QtCore.QRect(0, 0, 91, 41))
+        self.btn_scan.setGeometry(QtCore.QRect(0, 10, 81, 41))
         self.btn_scan.setObjectName("btn_scan")
         self.table_eaten_today = QtWidgets.QTableWidget(self.centralWidget)
-        self.table_eaten_today.setGeometry(QtCore.QRect(100, 0, 691, 411))
+        self.table_eaten_today.setGeometry(QtCore.QRect(90, 10, 701, 411))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.table_eaten_today.sizePolicy().hasHeightForWidth())
+        self.table_eaten_today.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.table_eaten_today.setFont(font)
         self.table_eaten_today.setObjectName("table_eaten_today")
         self.table_eaten_today.setColumnCount(8)
         self.table_eaten_today.setRowCount(0)
@@ -48,12 +56,14 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.table_eaten_today.setHorizontalHeaderItem(7, item)
         self.table_eaten_today.horizontalHeader().setDefaultSectionSize(85)
-        self.table_eaten_today.horizontalHeader().setStretchLastSection(True)
+        self.table_eaten_today.horizontalHeader().setStretchLastSection(False)
+        self.table_eaten_today.verticalHeader().setDefaultSectionSize(20)
+        self.table_eaten_today.verticalHeader().setMinimumSectionSize(20)
         self.btn_search = QtWidgets.QPushButton(self.centralWidget)
-        self.btn_search.setGeometry(QtCore.QRect(0, 50, 91, 41))
+        self.btn_search.setGeometry(QtCore.QRect(0, 60, 81, 41))
         self.btn_search.setObjectName("btn_search")
         self.btn_delete = QtWidgets.QPushButton(self.centralWidget)
-        self.btn_delete.setGeometry(QtCore.QRect(0, 100, 91, 41))
+        self.btn_delete.setGeometry(QtCore.QRect(0, 110, 81, 41))
         self.btn_delete.setObjectName("btn_delete")
         self.calendar = QtWidgets.QCalendarWidget(self.centralWidget)
         self.calendar.setEnabled(True)
@@ -64,7 +74,7 @@ class Ui_MainWindow(object):
         self.calendar.setObjectName("calendar")
         MainWindow.setCentralWidget(self.centralWidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 800, 33))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menuBar.setObjectName("menuBar")
         MainWindow.setMenuBar(self.menuBar)
         self.mainToolBar = QtWidgets.QToolBar(MainWindow)

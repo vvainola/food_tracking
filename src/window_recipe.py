@@ -1,15 +1,18 @@
 import db.databaseHandler
-import gui.recipe_window_auto
+import gui.recipe_window
 import time
 import os
+import window_search
 
 from window_weight import WeightWindow
+
 from barcodescanner import scan_picture
+from utils import toggle_keyboard
 
 from PyQt5.QtWidgets import *
 
 
-class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
+class RecipeWindow(QMainWindow, gui.recipe_window.Ui_recipe_form):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.setupUi(self)
@@ -22,9 +25,7 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
 
         #Create windows
         self.weight_window = WeightWindow()
-
-        # Callback function to be called on ok press
-        self.cb_func = None
+        self.search_window = window_search.SearchWindow(recipe_window=False)
 
         # Name of the recipe
         self.name = None
@@ -38,9 +39,19 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
         self.satfat_100 = 0
         self.salt_100 = 0
 
+        #Set column widths
+        self.table_recipe.setColumnWidth(0, 200) # Name
+        self.table_recipe.setColumnWidth(1, 72) # Amount
+        self.table_recipe.setColumnWidth(2, 72) # Calories
+        self.table_recipe.setColumnWidth(3, 72) # Protein
+        self.table_recipe.setColumnWidth(4, 72) # Carbs
+        self.table_recipe.setColumnWidth(5, 72) # Sugar
+        self.table_recipe.setColumnWidth(6, 72) # Fat
+        self.table_recipe.setColumnWidth(7, 72) # Satfat
+        self.table_recipe.setColumnWidth(8, 72) # Salt
+
     def pressed_quit(self):
         self.close()
-        os.system("./toggle_keyboard.sh -off")
 
     def pressed_remove(self):
         selection_model = self.table_recipe.selectionModel()
@@ -59,8 +70,7 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
         self.update_table()
 
     def pressed_search(self):
-        self.cb_func(self.add_name_ingredient)
-        self.close()
+        self.search_window.show_window(self.add_name_ingredient)
 
     def pressed_scan(self):
         barcode = scan_picture()
@@ -76,7 +86,7 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
                 self.weight_window.show_window(self.add_ingredient)
 
     def add_name_ingredient(self, ingredient_name):
-        self.show_window(self.name, self.cb_func)
+        self.show_window(self.name)
         self.ingredient_name = ingredient_name
         self.weight_window.show_window(self.add_ingredient)
 
@@ -86,20 +96,18 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
         data["INGREDIENT"] = self.ingredient_name
         data["AMOUNT"] = weight
         db.databaseHandler.insert_into("FOOD_RECIPE", data)
-        self.update_table()
+        self.update_table(update_database=True)
 
-    def show_window(self, name, cb_func):
+    def show_window(self, name):
         self.show()
         self.label_name.setText(name)
         self.setGeometry(self.geometry())
         self.move(0, 0)
 
-        self.cb_func = cb_func
-
         self.name = name
         self.update_table()
 
-    def update_table(self):
+    def update_table(self, update_database=False):
         # Reset total values
         total_amount = 0
         total_calories = 0
@@ -257,6 +265,7 @@ class RecipeWindow(QMainWindow, gui.recipe_window_auto.Ui_recipe_form):
         self.table_recipe.setItem(
             1, 8, QTableWidgetItem(str("%.1f" % total_salt)))
 
-        db.databaseHandler.replace_into("FOOD_DATA", recipe_data)
+        if update_database:
+            db.databaseHandler.replace_into("FOOD_DATA", recipe_data)
 
 

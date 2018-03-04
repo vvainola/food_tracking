@@ -31,7 +31,7 @@ def init_database():
 
     conn.execute('''CREATE TABLE IF NOT EXISTS FOOD_LOG
                     (ID         INTEGER     PRIMARY KEY,
-                    NAME        TEXT    PRIMARY KEY,
+                    NAME        TEXT,
                     DATE        TEXT,
                     AMOUNT      INTEGER,
                     CONSTRAINT FK_NAME

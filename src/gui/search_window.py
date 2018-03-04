@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'search_window.ui'
+# Form implementation generated from reading ui file './src/gui/qt/search_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_search_form(object):
     def setupUi(self, search_form):
         search_form.setObjectName("search_form")
-        search_form.resize(800, 235)
+        search_form.resize(800, 266)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -23,7 +23,10 @@ class Ui_search_form(object):
         self.centralwidget = QtWidgets.QWidget(search_form)
         self.centralwidget.setObjectName("centralwidget")
         self.table_search = QtWidgets.QTableWidget(self.centralwidget)
-        self.table_search.setGeometry(QtCore.QRect(0, 50, 792, 181))
+        self.table_search.setGeometry(QtCore.QRect(0, 40, 792, 221))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.table_search.setFont(font)
         self.table_search.setObjectName("table_search")
         self.table_search.setColumnCount(9)
         self.table_search.setRowCount(0)
@@ -46,33 +49,35 @@ class Ui_search_form(object):
         item = QtWidgets.QTableWidgetItem()
         self.table_search.setHorizontalHeaderItem(8, item)
         self.table_search.horizontalHeader().setDefaultSectionSize(87)
+        self.table_search.verticalHeader().setDefaultSectionSize(20)
+        self.table_search.verticalHeader().setMinimumSectionSize(20)
         self.box_search = QtWidgets.QLineEdit(self.centralwidget)
-        self.box_search.setGeometry(QtCore.QRect(10, 10, 201, 31))
+        self.box_search.setGeometry(QtCore.QRect(70, 10, 201, 21))
         self.box_search.setText("")
         self.box_search.setObjectName("box_search")
         self.btn_name = QtWidgets.QRadioButton(self.centralwidget)
-        self.btn_name.setGeometry(QtCore.QRect(220, 10, 121, 31))
+        self.btn_name.setGeometry(QtCore.QRect(280, 0, 61, 31))
         self.btn_name.setObjectName("btn_name")
         self.bnt_barcode = QtWidgets.QRadioButton(self.centralwidget)
-        self.bnt_barcode.setGeometry(QtCore.QRect(280, 10, 151, 31))
+        self.bnt_barcode.setGeometry(QtCore.QRect(350, 0, 71, 31))
         self.bnt_barcode.setObjectName("bnt_barcode")
         self.btn_quit = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_quit.setGeometry(QtCore.QRect(370, 10, 61, 31))
+        self.btn_quit.setGeometry(QtCore.QRect(0, 10, 61, 21))
         self.btn_quit.setObjectName("btn_quit")
         self.btn_ok = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_ok.setGeometry(QtCore.QRect(740, 10, 51, 31))
+        self.btn_ok.setGeometry(QtCore.QRect(740, 10, 51, 21))
         self.btn_ok.setObjectName("btn_ok")
         self.btn_save = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_save.setGeometry(QtCore.QRect(640, 10, 81, 31))
+        self.btn_save.setGeometry(QtCore.QRect(640, 10, 81, 21))
         self.btn_save.setObjectName("btn_save")
         self.btn_new = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_new.setGeometry(QtCore.QRect(430, 10, 61, 31))
+        self.btn_new.setGeometry(QtCore.QRect(430, 10, 61, 21))
         self.btn_new.setObjectName("btn_new")
         self.btn_remove = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_remove.setGeometry(QtCore.QRect(560, 10, 81, 31))
+        self.btn_remove.setGeometry(QtCore.QRect(560, 10, 81, 21))
         self.btn_remove.setObjectName("btn_remove")
         self.btn_edit = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_edit.setGeometry(QtCore.QRect(490, 10, 71, 31))
+        self.btn_edit.setGeometry(QtCore.QRect(490, 10, 71, 21))
         self.btn_edit.setObjectName("btn_edit")
         search_form.setCentralWidget(self.centralwidget)
 

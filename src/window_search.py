@@ -1,33 +1,46 @@
 import db.databaseHandler
 import os
-import gui.search_window_auto
-from window_recipe import RecipeWindow
+import gui.search_window
+import window_recipe
+
+from utils import toggle_keyboard
 from PyQt5.QtWidgets import *
 
 
-class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
-    def __init__(self, parent=None):
-        super(self.__class__, self).__init__(parent)
+class SearchWindow(QMainWindow, gui.search_window.Ui_search_form):
+    def __init__(self, recipe_window):
+        super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.parent = parent
 
         # Set name search by default
         self.btn_name.setChecked(True)
 
         # Create recipe window
-        self.recipe_window = RecipeWindow()
+        if recipe_window:
+            self.recipe_window = window_recipe.RecipeWindow()
+            self.btn_edit.clicked.connect(self.pressed_edit)
 
         # Connect buttons
         self.btn_quit.clicked.connect(self.pressed_quit)
         self.btn_ok.clicked.connect(self.pressed_ok)
         self.btn_new.clicked.connect(self.pressed_new)
-        self.btn_edit.clicked.connect(self.pressed_edit)
         self.btn_remove.clicked.connect(self.pressed_remove)
         self.btn_save.clicked.connect(self.pressed_save)
         self.box_search.textChanged.connect(self.text_changed)
 
         #callback function to be called on ok press
         self.cb_function = None
+
+        #Set column widths
+        self.table_search.setColumnWidth(0, 72) # Code
+        self.table_search.setColumnWidth(1, 200) # Name
+        self.table_search.setColumnWidth(2, 72) # Calories
+        self.table_search.setColumnWidth(3, 72) # Protein
+        self.table_search.setColumnWidth(4, 72) # Carbs
+        self.table_search.setColumnWidth(5, 72) # Sugar
+        self.table_search.setColumnWidth(6, 72) # Fat
+        self.table_search.setColumnWidth(7, 72) # Satfat
+        self.table_search.setColumnWidth(8, 72) # Salt
 
     def pressed_save(self):
         # Go through all rows
@@ -73,7 +86,7 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
 
     def pressed_quit(self):
         """ Pressing quit button closes the window """
-        os.system("./toggle_keyboard.sh -off")
+        toggle_keyboard("off")
         self.close()
 
     def pressed_edit(self):
@@ -95,34 +108,20 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
         if search_result[1] == []:
             return
 
-        self.close()
-        self.recipe_window.show_window(name, self.show_window)
-
-    def pressed_ok(self):
-        selection_model = self.table_search.selectionModel()
-        try:
-            row_index = selection_model.selectedRows()[0].row()
-        except IndexError:
-            return
-        name = self.table_search.item(row_index, 1).text()
-        self.close()
-        self.cb_function(name)
+        self.recipe_window.show_window(name)
 
     def text_changed(self):
         self.table_search.setRowCount(0)
         # There is more than 1 character in the search box
         search_text = self.box_search.text()
         if search_text == "":
-            search_text = "¤"
+            search_text = "#"
 
         # Search for name
         if self.btn_name.isChecked():
             search_result = db.databaseHandler.search_like(
                 "FOOD_DATA", "NAME", search_text)
-        # Search for barcode
-        else:
-            search_result = db.databaseHandler.search_like(
-                "FOOD_DATA", "BARCODE", search_text)
+
         names = search_result[0]
         data = search_result[1]
         # Add search results in the table
@@ -148,9 +147,19 @@ class SearchWindow(QMainWindow, gui.search_window_auto.Ui_search_form):
             self.table_search.setItem(
                 row_count, 8, QTableWidgetItem(str(item[names["SALT"]])))
 
+    def pressed_ok(self):
+        selection_model = self.table_search.selectionModel()
+        try:
+            row_index = selection_model.selectedRows()[0].row()
+        except IndexError:
+            return
+        name = self.table_search.item(row_index, 1).text()
+        self.close()
+        self.cb_function(name) 
+
     def show_window(self, cb_func):
         self.show()
         self.move(0, 0)
-        os.system("./toggle_keyboard.sh -on")
+        toggle_keyboard("on")
 
         self.cb_function = cb_func

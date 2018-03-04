@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'weight_window.ui'
+# Form implementation generated from reading ui file './src/gui/qt/weight_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,6 +24,9 @@ class Ui_weight_form(object):
         self.centralwidget.setObjectName("centralwidget")
         self.table_weight = QtWidgets.QTableWidget(self.centralwidget)
         self.table_weight.setGeometry(QtCore.QRect(0, 0, 211, 101))
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.table_weight.setFont(font)
         self.table_weight.setObjectName("table_weight")
         self.table_weight.setColumnCount(2)
         self.table_weight.setRowCount(0)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'recipe_window.ui'
+# Form implementation generated from reading ui file './src/gui/qt/recipe_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.9
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_recipe_form(object):
     def setupUi(self, recipe_form):
         recipe_form.setObjectName("recipe_form")
-        recipe_form.resize(800, 235)
+        recipe_form.resize(800, 266)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -23,7 +23,10 @@ class Ui_recipe_form(object):
         self.centralwidget = QtWidgets.QWidget(recipe_form)
         self.centralwidget.setObjectName("centralwidget")
         self.table_recipe = QtWidgets.QTableWidget(self.centralwidget)
-        self.table_recipe.setGeometry(QtCore.QRect(0, 50, 792, 181))
+        self.table_recipe.setGeometry(QtCore.QRect(0, 40, 792, 221))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.table_recipe.setFont(font)
         self.table_recipe.setObjectName("table_recipe")
         self.table_recipe.setColumnCount(9)
         self.table_recipe.setRowCount(0)
@@ -46,20 +49,22 @@ class Ui_recipe_form(object):
         item = QtWidgets.QTableWidgetItem()
         self.table_recipe.setHorizontalHeaderItem(8, item)
         self.table_recipe.horizontalHeader().setDefaultSectionSize(87)
+        self.table_recipe.verticalHeader().setDefaultSectionSize(20)
+        self.table_recipe.verticalHeader().setMinimumSectionSize(20)
         self.btn_quit = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_quit.setGeometry(QtCore.QRect(10, 10, 61, 31))
+        self.btn_quit.setGeometry(QtCore.QRect(0, 0, 41, 31))
         self.btn_quit.setObjectName("btn_quit")
         self.btn_scan = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_scan.setGeometry(QtCore.QRect(430, 10, 61, 31))
+        self.btn_scan.setGeometry(QtCore.QRect(410, 0, 61, 31))
         self.btn_scan.setObjectName("btn_scan")
         self.btn_remove = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_remove.setGeometry(QtCore.QRect(560, 10, 81, 31))
+        self.btn_remove.setGeometry(QtCore.QRect(560, 0, 81, 31))
         self.btn_remove.setObjectName("btn_remove")
         self.btn_search = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_search.setGeometry(QtCore.QRect(490, 10, 71, 31))
+        self.btn_search.setGeometry(QtCore.QRect(480, 0, 71, 31))
         self.btn_search.setObjectName("btn_search")
         self.label_name = QtWidgets.QLabel(self.centralwidget)
-        self.label_name.setGeometry(QtCore.QRect(80, 10, 341, 37))
+        self.label_name.setGeometry(QtCore.QRect(60, 0, 341, 31))
         self.label_name.setObjectName("label_name")
         recipe_form.setCentralWidget(self.centralwidget)
 

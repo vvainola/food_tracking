@@ -1,10 +1,11 @@
-import gui.add_food_data_auto
+import gui.add_food_data
 import db.databaseHandler
 import os
+from utils import toggle_keyboard
 from PyQt5.QtWidgets import *
 
 
-class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
+class AddFoodWindow(QMainWindow, gui.add_food_data.Ui_add_food_form):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__()
         self.setupUi(self)
@@ -26,7 +27,7 @@ class AddFoodWindow(QMainWindow, gui.add_food_data_auto.Ui_add_food_form):
         """ Pressing cancel button closes the window
             and keyboard 
         """
-        os.system("./toggle_keyboard.sh -off")
+        toggle_keyboard("off")
         self.close()
 
     def pressed_ok(self):

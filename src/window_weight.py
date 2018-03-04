@@ -1,9 +1,10 @@
 import os
-import gui.weight_window_auto
+import gui.weight_window
+from utils import toggle_keyboard
 from PyQt5.QtWidgets import *
 
 
-class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
+class WeightWindow(QMainWindow, gui.weight_window.Ui_weight_form):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__(parent)
         self.setupUi(self)
@@ -21,12 +22,12 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
 
     def pressed_cancel(self):
         """ Pressing cancel button closes the window """
-        os.system("./toggle_keyboard.sh -off")
+        toggle_keyboard("off")
         self.close()
 
     def pressed_ok(self):
         """ Pressing ok button closes the window and add the values to todays table """
-        os.system("./toggle_keyboard.sh -off")
+        toggle_keyboard("off")
         start_weight = int(self.table_weight.item(0, 0).text())
         end_weight = int(self.table_weight.item(0, 1).text())
         weight = start_weight - end_weight
@@ -41,6 +42,7 @@ class WeightWindow(QMainWindow, gui.weight_window_auto.Ui_weight_form):
         self.table_weight.setItem(0, 1, QTableWidgetItem("0"))
 
     def show_window(self, cb_function):
+        toggle_keyboard("on")
         # Clear table before showing it
         self.clear_table()
         self.show()
